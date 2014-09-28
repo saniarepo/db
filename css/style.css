@@ -1,0 +1,62 @@
+table
+{
+    background-color: #fff;
+    font-size: 12px;  
+}
+
+
+tr
+{
+    cursor: pointer;    
+}
+
+tr:hover
+{
+    color: #777;    
+}
+
+tr.active
+{
+    font-weight: bold;
+    color: #300;
+}
+
+.wrap-table-div
+{
+    
+    width: 500px;
+    height: 300px;
+    overflow-y: scroll;
+    display: inline-block;
+}
+ 
+ul.head
+{
+    background-color: #eee;
+    /*border: 1px solid red;*/
+    padding: 0;
+    margin: 0;
+    height: 80px;
+}
+
+
+.head li
+{
+    display: inline-block;
+    border-left: 1px solid #aaa;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    height: 80px;
+    vertical-align: middle;
+    
+}
+
+.head li:hover
+{
+    color: #aa0;
+}
+
+
+
