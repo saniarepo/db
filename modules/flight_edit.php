@@ -4,6 +4,9 @@ require_once('db.func.php');
 
 $id = ( isset( $_POST['id']) )? $_POST['id'] : 0;
 $currRow = null;
+$trend1 = ( isset( $_POST['trend1'] ) )? $_POST['trend1'] : 'ASC';
+$field1 = ( isset($_POST['field1']))? $_POST['field1'] : 'id';
+
 
 /*delete*/
 if ( isset($_POST['del']) )
@@ -40,42 +43,60 @@ if ( isset($_POST['update']) )
     dbQuery($sql);
 }
 
-$sql = 'SELECT * from flight';
+$sql = 'SELECT * from flight ORDER BY '. $field1 . ' ' . $trend1;
 $array1 = dbGetQueryResult($sql);
 
 ?>
-
-<h3>Рейсы</h3>
-<table id="flight-edit-table" class="table table-bordered table-striped">
+<table class="table">
 <tr>
-    <th>id</th>
-    <th>Время вылета</th>
-    <th>Время прилета</th>
-    <th>Пункт отправления</th>
-    <th>Пункт назначения</th>
-    <th>Количество мест</th>
-</tr>
+<td>
+<h3>Рейсы</h3>
+<ul class="head" id="head-flight">
+    <li id="time_dep">Время вылета</li>
+    <li id="time_arr">Время прилета</li>
+    <li id="point_dep">Пункт отправления</li>
+    <li id="point_arr">Пункт назначения</li>
+    <li id="place">Кол-во мест</li>
+</ul>
+<div class="wrap-table-div">
+<table id="flight-edit-table" class="table table-bordered table-hover">
+
 <?php foreach ( $array1 as $row1 ): if ( $id == 0 ) $id = $row1['id'];?>
-    <tr <?php if($row1['id'] == $id) { echo 'class="active"'; $currRow = $row1; }?> id="<?=$row1['id']?>">
-    <?php foreach ( $row1 as $col ): ?>
-        <td><?=$col?></td>
+    <tr <?php if($row1['id'] == $id) { echo 'class="active tbody"'; $currRow = $row1; }else{echo 'class="tbody"';}?> id="<?=$row1['id']?>">
+    <?php foreach ( $row1 as $key => $col ): ?>
+        <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
     <?php endforeach;?>
     </tr>
 <?php endforeach;?>
 
 </table>
-
+</div>
+<p>
+<hr />
 <button id="btn-flight-del">Удалить</button>
 <button id="btn-flight-edit">Редактировать</button>
 <button id="btn-flight-create">Новый</button>
-
+</p>
+</td>
+</tr>
+</table>
 <script type="text/javascript" src="js/flight_edit.js"></script>
 <script type="text/javascript">
-$('#btn-flight-edit').click(function(){
-    $('#data').load('modules/flight_edit_form.php',{
-        <?php foreach( $currRow as $key => $val ):?>
-            <?=$key.':'."'".$val."'".','?>
-        <?php endforeach;?>
+    var trend1 = '<?=$trend1?>';
+    var field1 = '<?=$field1?>';
+   
+    $('#btn-flight-edit').click(function(){
+        $('#data').load('modules/flight_edit_form.php',{
+            <?php foreach( $currRow as $key => $val ):?>
+                <?=$key.':'."'".$val."'".','?>
+            <?php endforeach;?>
+        });
     });
-});
+    $(document).ready(function(){
+        $('#flight-edit-table tr:first td').each(function(){
+            $('li#'+$(this).attr('key')).width($(this).innerWidth()-2).height(80);
+        });
+    }); 
+    
+
 </script>

@@ -5,6 +5,11 @@ require_once('db.func.php');
 $idPassenger = ( isset( $_POST['idPassenger']) )? $_POST['idPassenger'] : 0;
 $idTicket = ( isset( $_POST['idTicket']) )? $_POST['idTicket'] : 0;
 $currRow = null;
+$trend1 = ( isset( $_POST['trend1'] ) )? $_POST['trend1'] : 'ASC';
+$field1 = ( isset($_POST['field1']))? $_POST['field1'] : 'id';
+$trend2 = ( isset( $_POST['trend2'] ) )? $_POST['trend2'] : 'ASC';
+$field2 = ( isset($_POST['field2']))? $_POST['field2'] : 'id';
+
 
 /*delete*/
 if ( isset( $_POST['del']) )
@@ -22,78 +27,97 @@ if ( isset( $_POST['add']) )
     dbQuery($sql);
 }
 
-$sql = 'SELECT * from passenger';
+$sql = "SELECT * from passenger ORDER BY $field1 $trend1";
 $array1 = dbGetQueryResult($sql);
 
 ?>
 <h2>Оформление билетов</h2>
-<h3>Пассажиры</h3>
-<table id="passenger-ticket-table" class="table table-bordered table-striped">
+<table class="table">
 <tr>
-    <th>id</th>
-    <th>Имя</th>
-    <th>Фамилия</th>
-    <th>Пол</th>
-    <th>Возраст</th>
-    <th>Паспорт</th>
-</tr>
+<td>
+
+<h3>Пассажиры</h3>
+<ul class="head" id="head-passenger">
+    <li id="name">Имя</li>
+    <li id="lastname">Фамилия</li>
+    <li id="sex">Пол</li>
+    <li id="age">Возраст</li>
+    <li id="passport">Паспорт</li>
+</ul>
+<div class="wrap-table-div">
+<table id="passenger-ticket-table" class="table table-bordered table-hover">
+
 <?php foreach ( $array1 as $row1 ): if ( $idPassenger == 0 ) $idPassenger = $row1['id'];?>
     <tr <?php if($row1['id'] == $idPassenger) { echo 'class="active"'; $currRow = $row1; }?> id="<?=$row1['id']?>">
-    <?php foreach ( $row1 as $col ): ?>
-        <td><?=$col?></td>
+    <?php foreach ( $row1 as $key => $col ): ?>
+        <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
     <?php endforeach;?>
     </tr>
 <?php endforeach;?>
 
 </table>
-
+</div>
+</td>
 <?php 
-    $sql = "SELECT ticket.id,ticket.date_dep,flight.time_dep,flight.time_arr,flight.point_dep, flight.point_arr, flight.place FROM ticket, flight WHERE ticket.passenger=$idPassenger AND ticket.flight_id=flight.id";
+    $sql = "SELECT ticket.id,ticket.date_dep,flight.time_dep,flight.time_arr,flight.point_dep, flight.point_arr FROM ticket, flight WHERE ticket.passenger=$idPassenger AND ticket.flight_id=flight.id ORDER BY $field2 $trend2";
     $array2 = dbGetQueryResult($sql);
 ?>
 
+<td>
 <h3>Билеты у данного человека</h3>
+<ul class="head" id="head-flight">
+    <li id="date_dep">Дата вылета</li>
+    <li id="time_dep">Время вылета</li>
+    <li id="time_arr">Время прилета</li>
+    <li id="point_dep">Пункт отправления</li>
+    <li id="point_arr">Пункт назначения</li>
+</ul>
+<div class="wrap-table-div">
 <table id="ticket-edit-table" class="table table-bordered table-striped">
-<tr>
-    <th>id</th>
-    <th>Дата вылета</th>
-    <th>Время вылета</th>
-    <th>Время прилета</th>
-    <th>Пункт отправления</th>
-    <th>Пункт назначения</th>
-    <th>Количество мест</th>
-</tr>
 
 <?php foreach ( $array2 as $row2 ): if ( $idTicket == 0 ) $idTicket = $row2['id'];?>
     <tr <?php if($row2['id'] == $idTicket)  echo 'class="active"';?> id="<?=$row2['id']?>">
-    <?php foreach ( $row2 as $col ): ?>
-        <td><?=$col?></td>
+    <?php foreach ( $row2 as $key => $col ): ?>
+        <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
     <?php endforeach;?>
     </tr>
 <?php endforeach;?>
 
 </table>
-
+</div>
+<p>
+<hr />
 <button id="btn-ticket-add">Оформить билет</button>
 <button id="btn-ticket-del">Сдать билет</button>
+</p>
 
+
+</td>
+</tr>
+</table>
 <script type="text/javascript">
     var activePassenger = $('#passenger-ticket-table tr.active');
     var idPassenger = activePassenger.attr('id');
     var activeTicket = $('#ticket-edit-table tr.active');
     var idTicket = activeTicket.attr('id');
     
+    var trend1 = '<?=$trend1?>';
+    var field1 = '<?=$field1?>';
+    var trend2 = '<?=$trend2?>';
+    var field2 = '<?=$field2?>';
+    var idTicket = '<?=$idTicket?>';
+    var idPassenger = '<?=$idPassenger?>';
     
     $('#passenger-ticket-table tr').click(function(){
         idPassenger = this.id;
         idTicket = 0;
-        $('#data').load('modules/ticket_edit.php',{idTicket:idTicket,idPassenger:idPassenger});
+        $('#data').load('modules/ticket_edit.php',{idTicket:idTicket,idPassenger:idPassenger,field1:field1, field2:field2,trend1:trend1,trend2:trend2});
     });
     
     
     $('#ticket-edit-table tr').click(function(){
         idTicket = this.id;
-        $('#data').load('modules/ticket_edit.php',{idTicket:idTicket,idPassenger:idPassenger});
+        $('#data').load('modules/ticket_edit.php',{idTicket:idTicket,idPassenger:idPassenger,field1:field1, field2:field2,trend1:trend1,trend2:trend2});
     });
     
     $('#btn-ticket-del').click(function(){
@@ -101,9 +125,31 @@ $array1 = dbGetQueryResult($sql);
     });
     
     $('#btn-ticket-add').click(function(){
-        $('#data').load('modules/ticket_edit_form.php',{
-            idPassenger:idPassenger
+        $('#data').load('modules/ticket_edit_form.php',{idPassenger:idPassenger});
+    });
+    
+    $(document).ready(function(){
+        $('#passenger-ticket-table tr:first td').each(function(){
+            $('li#'+$(this).attr('key')).width($(this).innerWidth()-2).height(80);
+        });
+        $('#ticket-edit-table tr:first td').each(function(){
+                $('li#'+$(this).attr('key')).width($(this).innerWidth()-2).height(80);
         });
     });
+    
+    $('ul#head-flight li').click(function(){
+        trend2 = ( trend2 == 'ASC' )? 'DESC' : 'ASC';
+        field2 = this.id;
+        $('#data').load('modules/ticket_edit.php',{id:id, field1:field1, field2:field2,trend1:trend1,trend2:trend2, idTicket:idTicket, idPassenger:idPassenger});
+        
+    });
+    
+    $('ul#head-passenger li').click(function(){
+    trend1 = ( trend1 == 'ASC' )? 'DESC' : 'ASC';
+    field1 = this.id;
+    $('#data').load('modules/ticket_edit.php',{id:id, field1:field1, field2:field2,trend1:trend1,trend2:trend2, idTicket:idTicket, idPassenger:idPassenger});
+    
+}); 
+    
 </script>
 

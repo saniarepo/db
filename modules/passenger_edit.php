@@ -4,6 +4,8 @@ require_once('db.func.php');
 
 $id = ( isset( $_POST['id']) )? $_POST['id'] : 0;
 $currRow = null;
+$trend1 = ( isset( $_POST['trend1'] ) )? $_POST['trend1'] : 'ASC';
+$field1 = ( isset($_POST['field1']))? $_POST['field1'] : 'id';
 
 /*delete*/
 if ( isset($_POST['del']) )
@@ -40,43 +42,61 @@ if ( isset($_POST['update']) )
     dbQuery($sql);
 }
 
-$sql = 'SELECT * from passenger';
+$sql = "SELECT * from passenger ORDER BY $field1 $trend1";
 $array1 = dbGetQueryResult($sql);
 
 ?>
 
-<h3>Пассажиры</h3>
-<table id="passenger-edit-table" class="table table-bordered table-striped">
+<table class="table">
 <tr>
-    <th>id</th>
-    <th>Имя</th>
-    <th>Фамилия</th>
-    <th>Пол</th>
-    <th>Возраст</th>
-    <th>Паспорт</th>
-</tr>
+<td>
+<h3>Пассажиры</h3>
+<ul class="head" id="head-passenger">
+    <li id="name">Имя</li>
+    <li id="lastname">Фамилия</li>
+    <li id="sex">Пол</li>
+    <li id="age">Возраст</li>
+    <li id="passport">Паспорт</li>
+</ul>
+
+<div class="wrap-table-div">
+<table id="passenger-edit-table" class="table table-bordered table-hover">
+
 <?php foreach ( $array1 as $row1 ): if ( $id == 0 ) $id = $row1['id'];?>
-    <tr <?php if($row1['id'] == $id) { echo 'class="active"'; $currRow = $row1; }?> id="<?=$row1['id']?>">
-    <?php foreach ( $row1 as $col ): ?>
-        <td><?=$col?></td>
+    <tr <?php if($row1['id'] == $id) { echo 'class="active tbody"'; $currRow = $row1; }else {echo 'class="tbody"';}?> id="<?=$row1['id']?>">
+    <?php foreach ( $row1 as $key => $col ): ?>
+        <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif; ?>
     <?php endforeach;?>
     </tr>
 <?php endforeach;?>
 
 </table>
-
+</div>
+<p>
+<hr />
 <button id="btn-passenger-del">Удалить</button>
 <button id="btn-passenger-edit">Редактировать</button>
 <button id="btn-passenger-create">Новый</button>
-
+</p>
+</td>
+</tr>
+</table>
 <script type="text/javascript" src="js/passenger_edit.js"></script>
 <script type="text/javascript">
-$('#btn-passenger-edit').click(function(){
-    $('#data').load('modules/passenger_edit_form.php',{
-        <?php foreach( $currRow as $key => $val ):?>
-            <?=$key.':'."'".$val."'".','?>
-        <?php endforeach;?>
+    var trend1 = '<?=$trend1?>';
+    var field1 = '<?=$field1?>';
+    $('#btn-passenger-edit').click(function(){
+        $('#data').load('modules/passenger_edit_form.php',{
+            <?php foreach( $currRow as $key => $val ):?>
+                <?=$key.':'."'".$val."'".','?>
+            <?php endforeach;?>
+        });
     });
-});
+    
+    $(document).ready(function(){
+            $('#passenger-edit-table tr:first td').each(function(){
+                $('li#'+$(this).attr('key')).width($(this).innerWidth()-2).height(80);
+            });
+        }); 
 </script>
 
