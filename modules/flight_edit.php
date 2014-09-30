@@ -81,6 +81,7 @@ $array1 = dbGetQueryResult($sql);
 </tr>
 </table>
 <script type="text/javascript" src="js/flight_edit.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
 <script type="text/javascript">
     var trend1 = '<?=$trend1?>';
     var field1 = '<?=$field1?>';

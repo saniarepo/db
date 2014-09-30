@@ -23,10 +23,18 @@ tr.active
 
 .wrap-table-div
 {
-    
     width: 500px;
     height: 300px;
     overflow-y: scroll;
+    display: inline-block;
+    margin-right: 0;
+}
+
+.wrap-form-div
+{
+    
+    width: 500px;
+    height: 400px;
     display: inline-block;
     margin-right: 0;
 }

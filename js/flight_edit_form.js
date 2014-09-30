@@ -9,7 +9,18 @@ $('#btn-flight-create-ok').click(function(){
     var point_arr = $('#point_arr').val();
     var place = $('#place').val();
     
-    $('#data').load('modules/flight_edit.php',{add:'1',time_dep:time_dep,time_arr:time_arr,point_dep:point_dep,point_arr:point_arr,place:place});
+    var data = {add:'1',time_dep:time_dep,time_arr:time_arr,point_dep:point_dep,point_arr:point_arr,place:place};
+    var object = JSON.stringify(data);
+    var title = 'Добавление рейса';
+    var message = 'Добавить рейс: ';
+    message += '<br/>Время вылета: ' + time_dep;
+    message += '<br/>Время прилета: ' + time_arr;
+    message += '<br/>Пункт вылета: ' + point_dep;
+    message += '<br/>Пункт прилета: ' + point_arr;
+    message += '<br/>Количество мест: ' + place;
+    var targetOk = 'modules/flight_edit.php';
+    var targetCancel = 'modules/flight_edit.php';
+    confirm(title, message, object, targetOk, targetCancel);
 });
 
 
