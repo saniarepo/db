@@ -80,5 +80,13 @@ button
     color: #aa0;
 }
 
+.novalid
+{
+   border: 1px solid red; 
+}
 
+.novalid-message
+{
+   color: red; 
+}
 

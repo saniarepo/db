@@ -41,7 +41,7 @@
         <label>Возраст: </label>
     </td>
     <td>
-        <input type="text" id="age" value="<?=(isset($_POST['age']))? $_POST['age']:''?>"/>
+        <input class="number" type="text" id="age" value="<?=(isset($_POST['age']))? $_POST['age']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -58,6 +58,7 @@
         <button id="btn-passenger-update-ok">Ok</button>
         <script type="text/javascript">
             $('#btn-passenger-update-ok').click(function(){
+            if (!validate())return false;
             var id = <?=$_POST['id']?>;
             var name = "'"+$('#name').val()+"'";
             var lastname = "'"+$('#lastname').val()+"'";
@@ -90,4 +91,5 @@
 
 
 <script type="text/javascript" src="js/passenger_edit_form.js"></script>
-<script type="text/javascript" src="js/confirm.js"></script> 
+<script type="text/javascript" src="js/confirm.js"></script>
+<script type="text/javascript" src="js/validation.js"></script> 
