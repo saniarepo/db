@@ -4,12 +4,12 @@
     
     $idFlight = ( isset($_POST['idFlight']) )? $_POST['idFlight'] : 0;
     $idPassenger = ( isset($_POST['idPassenger']) )? $_POST['idPassenger'] : 0;
+    $trend1 = ( isset( $_POST['trend1'] ) )? $_POST['trend1'] : 'ASC';
+    $field1 = ( isset($_POST['field1']))? $_POST['field1'] : 'id';
+    $date_dep = ( isset($_POST['date_dep']))? $_POST['date_dep'] : ''; 
+    $sql = 'SELECT * from passenger WHERE id='.$idPassenger;
+    $array1 = dbGetQueryResult($sql);
    
-   $sql = 'SELECT * from passenger WHERE id='.$idPassenger;
-   $array1 = dbGetQueryResult($sql);
-   $trend1 = ( isset( $_POST['trend1'] ) )? $_POST['trend1'] : 'ASC';
-   $field1 = ( isset($_POST['field1']))? $_POST['field1'] : 'id';
-    
     
 ?>
 <table class="table">
@@ -86,17 +86,26 @@
 </td>
 </tr>
 </table>
-<script type="text/javascript" src="js/datepicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#ticket-add-date').datepicker();
+        
+        $('#ticket-add-date').datepicker("option","dateFormat","yy-mm-dd");
+        $('#ticket-add-date').datepicker("setDate","<?=$date_dep?>");
+    });
+</script>
 <script type="text/javascript" src="js/confirm.js"></script>
 <script type="text/javascript">
     var activeFlight = $('#ticket-flight-table tr.active');
     var idFlight = activeFlight.attr('id');
     var trend1 = '<?=$trend1?>';
     var field1 = '<?=$field1?>';
-    
+    var date_dep = '<?=$date_dep?>';
+
     $('#ticket-flight-table tr').click(function(){
         idFlight = this.id;
-        $('#data').load('modules/ticket_edit_form.php',{idFlight:idFlight,field1:field1, trend1:trend1, idPassenger:<?=$idPassenger?>});
+        date_dep = $('#ticket-add-date').val();
+        $('#data').load('modules/ticket_edit_form.php',{idFlight:idFlight,field1:field1, trend1:trend1, idPassenger:<?=$idPassenger?>,date_dep:date_dep});
     });
     
     $('#btn-ticket-add').click(function(){
@@ -136,7 +145,6 @@
         var targetOk = 'modules/ticket_edit.php';
         var targetCancel = 'modules/ticket_edit.php';
         confirm(title, message, object, targetOk, targetCancel);
-        //$('#data').load('modules/ticket_edit.php',{add:'1',idPassenger:<?=$idPassenger?>,idFlight:idFlight,ticketDate:ticketDate});
     });
     
     $('#btn-ticket-cancel').click(function(){
@@ -152,7 +160,8 @@
     $('ul#head-flight li').click(function(){
         trend1 = ( trend1 == 'ASC' )? 'DESC' : 'ASC';
         field1 = this.id;
-        $('#data').load('modules/ticket_edit_form.php',{idFlight:idFlight, field1:field1, trend1:trend1, idPassenger:<?=$idPassenger?> });
+        date_dep = $('#ticket-add-date').val();
+        $('#data').load('modules/ticket_edit_form.php',{idFlight:idFlight, field1:field1, trend1:trend1, idPassenger:<?=$idPassenger?>,date_dep:date_dep });
         
     }); 
 </script>

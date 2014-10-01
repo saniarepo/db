@@ -2,6 +2,47 @@
 
 require_once('db.func.php');
 
+function checkDateTicket($date,$idFlight,$title,$message,$target)
+{
+    $sql = "SELECT time_dep FROM flight WHERE id=$idFlight";
+    $array = dbGetQueryResult($sql);
+    $time = $array[0]['time_dep'];
+    $ticketDate = new DateTime($date.' '.$time);
+    $now = new DateTime();
+    if ( $ticketDate < $now )
+    {
+        require_once('message.php');
+        exit();
+    } 
+}
+
+function checkPlaceExists($date,$idFlight,$title,$message,$target)
+{
+    $sql = "SELECT COUNT(*) AS c FROM ticket WHERE date_dep='$date' AND flight_id=$idFlight";
+    $array = dbGetQueryResult($sql);
+    $ticketSell = $array[0]['c'];
+    $sql = "SELECT place FROM flight WHERE id=$idFlight";
+    $array = dbGetQueryResult($sql);
+    $ticketAll = $array[0]['place'];
+    if ( $ticketAll <= $ticketSell )
+    {
+        require_once('message.php');
+        exit();
+    }
+}
+
+function checkPassengerHasTicket($date,$idFlight,$idPassenger,$title,$message,$target)
+{
+    $sql = "SELECT COUNT(*) AS c FROM ticket WHERE date_dep='$date' AND flight_id=$idFlight AND passenger=$idPassenger";
+    $array = dbGetQueryResult($sql);
+    $tickets = $array[0]['c'];
+    if ( $tickets > 0 )
+    {
+        require_once('message.php');
+        exit();
+    }
+}   
+
 $idPassenger = ( isset( $_POST['idPassenger']) )? $_POST['idPassenger'] : 0;
 $idTicket = ( isset( $_POST['idTicket']) )? $_POST['idTicket'] : 0;
 $currRow = null;
@@ -23,6 +64,9 @@ if ( isset( $_POST['add']) )
 {
     $date = $_POST['ticketDate'];
     $idFlight = $_POST['idFlight'];
+    checkDateTicket($date,$idFlight,'Ошибка','Поезд ушел!','modules/ticket_edit_form.php');   
+    checkPlaceExists($date,$idFlight,'Ошибка','Нет мест на этот рейс','modules/ticket_edit_form.php');
+    checkPassengerHasTicket($date,$idFlight,$idPassenger,'Ошибка','На этот рейс у этого пассажира есть билет!','modules/ticket_edit_form.php');
     $sql = "INSERT INTO ticket (flight_id,passenger,date_dep) VALUES ($idFlight, $idPassenger, '$date')";
     dbQuery($sql);
 }
