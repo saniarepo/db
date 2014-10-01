@@ -19,7 +19,6 @@
     <div class="wrap-table-div">
     <table id="passenger-ticket-table" class="table table-bordered table-striped">
     <tr>
-        <th>id</th>
         <th>Имя</th>
         <th>Фамилия</th>
         <th>Пол</th>
@@ -28,17 +27,33 @@
     </tr>
     <?php foreach ( $array1 as $row1 ): if ( $idPassenger == 0 ) $idPassenger = $row1['id'];?>
         <tr>
-        <?php foreach ( $row1 as $col ): ?>
-            <td><?=$col?></td>
+        <?php foreach ( $row1 as $key => $col ): ?>
+            <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
         <?php endforeach;?>
         </tr>
     <?php endforeach;?>
 
 </table>
-<label>Дата: </label><input type="text" id="ticket-add-date"/><br />
-<div id="date-error"></div>
-<button id="btn-ticket-add">Ok</button>
-<button id="btn-ticket-cancel">Отмена</button>
+<table class="table">
+<tr>
+    <td>
+        <label>Дата: </label>
+    </td>
+    <td>
+        <input type="text" id="ticket-add-date"/>
+    </td>
+</tr>
+<tr>
+    <td colspan="2"><div id="date-error"></div></td>
+</tr>
+<tr>
+    <td colspan="2">
+        <button id="btn-ticket-add">Ok</button>
+        <button id="btn-ticket-cancel">Отмена</button>
+    </td>
+</tr>
+</table>
+
 </div>
 </td>
 
@@ -53,7 +68,6 @@
     <li id="time_arr">Время прилета</li>
     <li id="point_dep">Пункт отправления</li>
     <li id="point_arr">Пункт назначения</li>
-    <li id="place">Кол-во мест</li>
 </ul>
 <div class="wrap-table-div">
 <table id="ticket-flight-table" class="table table-bordered table-striped">
@@ -61,7 +75,7 @@
 <?php foreach ( $array2 as $row2 ): if ( $idFlight == 0 ) $idFlight = $row2['id'];?>
     <tr <?php if($row2['id'] == $idFlight) echo 'class="active"';?> id="<?=$row2['id']?>">
     <?php foreach ( $row2 as $key => $col ): ?>
-        <?php if($key != 'id'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
+        <?php if($key != 'id' && $key != 'place'):?><td key="<?=$key?>"><?=$col?></td><?php endif;?>
     <?php endforeach;?>
     </tr>
 <?php endforeach;?>
@@ -73,6 +87,7 @@
 </tr>
 </table>
 <script type="text/javascript" src="js/datepicker.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
 <script type="text/javascript">
     var activeFlight = $('#ticket-flight-table tr.active');
     var idFlight = activeFlight.attr('id');
@@ -90,8 +105,38 @@
             $('#date-error').html('<span style="color: #f00">Укажите дату</span>');
             return false;
         }
+        var time_dep, time_arr, point_dep, point_arr, date_dep,name,lastname;
+        $('#passenger-ticket-table tr td').each(function(){
+            switch( $(this).attr('key') ){
+                case 'name':  name = $(this).text(); break;
+                case 'lastname':  lastname = $(this).text(); break;
+            };
+        });
         
-        $('#data').load('modules/ticket_edit.php',{add:'1',idPassenger:<?=$idPassenger?>,idFlight:idFlight,ticketDate:ticketDate});
+        $('#ticket-flight-table tr.active td').each(function(){
+            switch( $(this).attr('key') ){
+                case 'time_dep':  time_dep = $(this).text(); break;
+                case 'time_arr':  time_arr = $(this).text(); break;
+                case 'point_dep':  point_dep = $(this).text(); break;
+                case 'point_arr':  point_arr = $(this).text(); break;
+            };
+        });
+        date_dep = $('#ticket-add-date').val();
+        var data = {add:'1',idPassenger:<?=$idPassenger?>,idFlight:idFlight,ticketDate:ticketDate};
+        var object = JSON.stringify(data);
+        var title = 'Оформление билета';
+        var message = 'Оформить билет: ';
+        message += '<br/>Имя: ' + name;
+        message += '<br/>Фамилия: ' + lastname;
+        message += '<br/>Дата вылета: ' + date_dep;
+        message += '<br/>Время вылета: ' + time_dep;
+        message += '<br/>Время прилета: ' + time_arr;
+        message += '<br/>Пункт вылета: ' + point_dep;
+        message += '<br/>Пункт прилета: ' + point_arr;
+        var targetOk = 'modules/ticket_edit.php';
+        var targetCancel = 'modules/ticket_edit.php';
+        confirm(title, message, object, targetOk, targetCancel);
+        //$('#data').load('modules/ticket_edit.php',{add:'1',idPassenger:<?=$idPassenger?>,idFlight:idFlight,ticketDate:ticketDate});
     });
     
     $('#btn-ticket-cancel').click(function(){

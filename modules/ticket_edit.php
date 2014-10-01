@@ -95,6 +95,7 @@ $array1 = dbGetQueryResult($sql);
 </td>
 </tr>
 </table>
+<script type="text/javascript" src="js/confirm.js"></script>
 <script type="text/javascript">
     var activePassenger = $('#passenger-ticket-table tr.active');
     var idPassenger = activePassenger.attr('id');
@@ -121,7 +122,37 @@ $array1 = dbGetQueryResult($sql);
     });
     
     $('#btn-ticket-del').click(function(){
-        $('#data').load('modules/ticket_edit.php',{del:'1', idTicket:idTicket,idPassenger:idPassenger});
+        var time_dep, time_arr, point_dep, point_arr, date_dep,name,lastname;
+        $('#passenger-ticket-table tr.active td').each(function(){
+            switch( $(this).attr('key') ){
+                case 'name':  name = $(this).text(); break;
+                case 'lastname':  lastname = $(this).text(); break;
+            };
+        });
+        
+        $('#ticket-edit-table tr.active td').each(function(){
+            switch( $(this).attr('key') ){
+                case 'time_dep':  time_dep = $(this).text(); break;
+                case 'time_arr':  time_arr = $(this).text(); break;
+                case 'point_dep':  point_dep = $(this).text(); break;
+                case 'point_arr':  point_arr = $(this).text(); break;
+                case 'date_dep':  date_dep = $(this).text(); break;
+            };
+        });
+        var data = {del:'1', idTicket:idTicket,idPassenger:idPassenger};
+        var object = JSON.stringify(data);
+        var title = 'Сдать билет';
+        var message = 'Сдать билет: ';
+        message += '<br/>Имя: ' + name;
+        message += '<br/>Фамилия: ' + lastname;
+        message += '<br/>Дата вылета: ' + date_dep;
+        message += '<br/>Время вылета: ' + time_dep;
+        message += '<br/>Время прилета: ' + time_arr;
+        message += '<br/>Пункт вылета: ' + point_dep;
+        message += '<br/>Пункт прилета: ' + point_arr;
+        var targetOk = 'modules/ticket_edit.php';
+        var targetCancel = 'modules/ticket_edit.php';
+        confirm(title, message, object, targetOk, targetCancel);
     });
     
     $('#btn-ticket-add').click(function(){
