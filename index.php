@@ -20,6 +20,16 @@
     <![endif]-->
   </head>
   <body>
+    <noscript>
+    <div class="wrap-noscript">
+        <div class="noscript">
+            <p>
+                В вашем браузере отключен javascript!<br/>
+                Включите javascript, иначе приложение работать не будет!
+            </p>
+        </div>
+    </div>
+    </noscript>
     <div class="container">
 
       <!-- Static navbar -->

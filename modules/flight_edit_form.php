@@ -14,7 +14,7 @@
     <td>
         <label>Время отправления: </label>
     <td>
-        <input type="text" id="time_dep" value="<?=(isset($_POST['time_dep']))? $_POST['time_dep']:''?>"/><br />
+        <input class="time" type="text" id="time_dep" value="<?=(isset($_POST['time_dep']))? $_POST['time_dep']:''?>"/><br />
     </td>
 </tr>
 <tr>
@@ -22,7 +22,7 @@
         <label>Время прибытия: </label>
     </td>
     <td>
-        <input type="text" id="time_arr" value="<?=(isset($_POST['time_arr']))? $_POST['time_arr']:''?>"/>
+        <input class="time" type="text" id="time_arr" value="<?=(isset($_POST['time_arr']))? $_POST['time_arr']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -30,7 +30,7 @@
         <label>Пункт отправления: </label>
     </td>
     <td>
-        <input type="text" id="point_dep" value="<?=(isset($_POST['point_dep']))? $_POST['point_dep']:''?>"/>
+        <input class="city" type="text" id="point_dep" value="<?=(isset($_POST['point_dep']))? $_POST['point_dep']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -38,7 +38,7 @@
         <label>Пункт прибытия: </label>
     </td>
     <td>
-        <input type="text" id="point_arr" value="<?=(isset($_POST['point_arr']))? $_POST['point_arr']:''?>"/>
+        <input class="city" type="text" id="point_arr" value="<?=(isset($_POST['point_arr']))? $_POST['point_arr']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -46,7 +46,7 @@
         <label>Количество мест: </label>
     </td>
     <td>
-        <input type="text" id="place" value="<?=(isset($_POST['place']))? $_POST['place']:''?>"/>
+        <input class="number" type="text" id="place" value="<?=(isset($_POST['place']))? $_POST['place']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -55,6 +55,7 @@
         <button id="btn-flight-update-ok">Сохранить</button>
         <script type="text/javascript">
             $('#btn-flight-update-ok').click(function(){
+            if (!validate()) return false;
             var id = <?=$_POST['id']?>;
             var time_dep = "'"+$('#time_dep').val()+"'";
             var time_arr = "'"+$('#time_arr').val()+"'";
@@ -88,4 +89,5 @@
 
 
 <script type="text/javascript" src="js/flight_edit_form.js"></script>
-<script type="text/javascript" src="js/confirm.js"></script> 
+<script type="text/javascript" src="js/confirm.js"></script>
+<script type="text/javascript" src="js/validation.js"></script> 

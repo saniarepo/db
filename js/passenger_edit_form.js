@@ -3,6 +3,7 @@ $('#btn-passenger-new-cancel').click(function(){
 });
 
 $('#btn-passenger-create-ok').click(function(){
+    if (!validate()) return false;
     var name = $('#name').val();
     var lastname = $('#lastname').val();
     var sex = $('#sex').val();

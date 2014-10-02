@@ -3,6 +3,7 @@ $('#btn-flight-new-cancel').click(function(){
 });
 
 $('#btn-flight-create-ok').click(function(){
+    if (!validate()) return false;
     var time_dep = $('#time_dep').val();
     var time_arr = $('#time_arr').val();
     var point_dep = $('#point_dep').val();

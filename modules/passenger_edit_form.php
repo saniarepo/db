@@ -14,7 +14,7 @@
         <label>Имя: </label>
     </td>
     <td>
-        <input type="text" id="name" value="<?=(isset($_POST['name']))? $_POST['name']:''?>"/>
+        <input class="name" type="text" id="name" value="<?=(isset($_POST['name']))? $_POST['name']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -22,7 +22,7 @@
         <label>Фамилия: </label>
     </td>
     <td>
-        <input type="text" id="lastname" value="<?=(isset($_POST['lastname']))? $_POST['lastname']:''?>"/>
+        <input class="name" type="text" id="lastname" value="<?=(isset($_POST['lastname']))? $_POST['lastname']:''?>"/>
     </td>
 </tr>
 <tr>
@@ -49,7 +49,7 @@
         <label>Паспорт: </label>
     </td>
     <td>
-        <input type="text" id="passport" value="<?=(isset($_POST['passport']))? $_POST['passport']:''?>"/>
+        <input class="passport" type="text" id="passport" value="<?=(isset($_POST['passport']))? $_POST['passport']:''?>"/>
     </td>
 </tr>
 <tr>
