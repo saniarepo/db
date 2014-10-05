@@ -11,7 +11,7 @@
       modal: true,
       buttons: {
         Ok: function() {
-          $('#data').load('<?=$target?>');
+          $('#data').load('<?=$target?>',{idPassenger:<?=$idPassenger?>,idFlight:<?=$idFlight?>});
           $( this ).dialog( "close" );
         }
       }
