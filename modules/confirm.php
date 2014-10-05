@@ -27,7 +27,7 @@ $object = isset( $_POST['object'] )? $_POST['object'] : '{}';
           $(this).dialog('close');
         },
         "Отмена": function() {
-          $( '#data' ).load('<?=$targetCancel?>');
+          $( '#data' ).load('<?=$targetCancel?>' );
           $(this).dialog('close');
         }
       }
