@@ -14,7 +14,7 @@ function validate(){
         }else{
             $(this).removeClass('novalid');
             if ( parent.children('p.novalid-message').length > 0 ){
-                parent.children('p.novalid-message').remove()
+                parent.children('p.novalid-message').remove();
             }
         }  
     });
@@ -33,7 +33,7 @@ function validate(){
         }else{
             $(this).removeClass('novalid');
             if ( parent.children('p.novalid-message').length > 0 ){
-                parent.children('p.novalid-message').remove()
+                parent.children('p.novalid-message').remove();
             }
         } 
     });
@@ -52,7 +52,7 @@ function validate(){
         }else{
             $(this).removeClass('novalid');
             if ( parent.children('p.novalid-message').length > 0 ){
-                parent.children('p.novalid-message').remove()
+                parent.children('p.novalid-message').remove();
             }
         } 
     });
@@ -71,7 +71,7 @@ function validate(){
         }else{
             $(this).removeClass('novalid');
             if ( parent.children('p.novalid-message').length > 0 ){
-                parent.children('p.novalid-message').remove()
+                parent.children('p.novalid-message').remove();
             }
         } 
     });
@@ -90,7 +90,7 @@ function validate(){
         }else{
             $(this).removeClass('novalid');
             if ( parent.children('p.novalid-message').length > 0 ){
-                parent.children('p.novalid-message').remove()
+                parent.children('p.novalid-message').remove();
             }
         } 
     });

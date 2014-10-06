@@ -23,7 +23,7 @@ tr.active
 
 .wrap-table-div
 {
-    width: 500px;
+    width: 100%;
     height: 300px;
     overflow-y: scroll;
     display: inline-block;
@@ -33,7 +33,7 @@ tr.active
 .wrap-form-div
 {
     
-    width: 500px;
+    width: 100%;
     height: 400px;
     display: inline-block;
     margin-right: 0;
@@ -46,7 +46,7 @@ ul.head
     padding: 0;
     margin: 0;
     height: 80px;
-    width: 500px;
+    width: 100%;
 }
 
 table.table td
